@@ -1,0 +1,24 @@
+version: "3.9"
+
+services:
+  drift-worker:
+    build:
+      context: ./Drift.Worker
+      dockerfile: ../Dockerfile
+    container_name: drift_worker
+    restart: unless-stopped
+
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Production"
+      FIREBASE_PROJECT_ID: ${FIREBASE_PROJECT_ID}
+      FIREBASE_CREDENTIALS: "/app/service-account.json"
+
+    volumes:
+      - ./service-account.json:/app/service-account.json:ro
+      - ./appsettings.json:/app/appsettings.json:ro
+
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "3"

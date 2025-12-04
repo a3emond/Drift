@@ -1,0 +1,152 @@
+{
+  "users": {
+    "{uid}": {
+      "created_at": 0,
+      "last_active": 0,
+
+      "settings": {
+        "chat_color": "",
+        "avatar_style": "",
+        "language": ""
+      },
+
+      "economy": {
+        "coins": 0,
+        "bottle_tokens": 0,
+        "daily_loot_timestamp": 0
+      },
+
+      "entitlements": {
+        "premium_user": false,
+        "unlocked_bottle_types": {
+          "time_locked": false,
+          "weather_locked": false,
+          "whisper_bottle": false,
+          "multi_media_bottle": false,
+          "rare_bottle_theme": false
+        }
+      },
+
+      "stats": {
+        "bottles_created": 0,
+        "bottles_opened": 0,
+        "distance_traveled_total_km": 0,
+        "chat_messages_sent": 0
+      }
+    }
+  },
+
+  "bottles": {
+    "{bottleId}": {
+      "owner_uid": "",
+      "created_at": 0,
+      "expires_at": null,
+      "opened_at": null,
+
+      "location": {
+        "lat": 0,
+        "lng": 0
+      },
+
+      "conditions": {
+        "password": null,
+        "time_window": {
+          "start": null,
+          "end": null
+        },
+        "weather": {
+          "type": null,
+          "threshold": null
+        },
+        "exact_location": false,
+        "distance_min": null,
+        "distance_max": null,
+        "unlock_at_time": null,
+        "one_shot": false
+      },
+
+      "content": {
+        "text": {
+          "original": null,
+          "original_lang": null,
+          "translation_memory": {}
+        },
+        "image_path": null,
+        "audio_path": null
+      },
+
+      "chat_enabled": true,
+
+      "status": {
+        "locked": true,
+        "dead": false,
+        "alive_until": 0,
+        "active_users_count": 0
+      }
+    }
+  },
+
+  "bottle_openers": {
+    "{bottleId}": {
+      "{uid}": {
+        "opened_at": 0,
+        "distance_from_drop_km": 0
+      }
+    }
+  },
+
+  "chats": {
+    "{bottleId}": {
+      "{messageId}": {
+        "uid": "",
+        "timestamp": 0,
+        "distance_category": "",
+
+        "text": {
+          "original": null,
+          "original_lang": null,
+          "translation_memory": {}
+        },
+
+        "image_path": null,
+        "audio_path": null
+      }
+    }
+  },
+
+  "presence": {
+    "{bottleId}": {
+      "{uid}": {
+        "last_seen": 0
+      }
+    }
+  },
+
+  "watched": {
+    "{uid}": {
+      "{bottleId}": {
+        "saved_at": 0,
+        "notified_ready": false
+      }
+    }
+  },
+
+  "notifications_queue": {
+    "{uid}": {
+      "{notificationId}": {
+        "type": "",
+        "bottle_id": "",
+        "created_at": 0,
+        "seen": false
+      }
+    }
+  },
+
+  "worker_internal": {
+    "bottles_to_cleanup": {
+      "{bottleId}": {
+        "expires_at": 0
+      }
+    }
+  }
+}

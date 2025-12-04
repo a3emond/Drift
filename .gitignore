@@ -1,0 +1,162 @@
+##############################################
+# macOS SYSTEM FILES
+##############################################
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+._*
+.Spotlight-V100
+.Trashes
+**/.DS_Store
+
+##############################################
+# XCODE / IOS PROJECT FILES
+##############################################
+*.xcworkspace
+*.xcuserstate
+xcuserdata/
+profile
+*.moved-aside
+DerivedData/
+*.ipa
+*.dSYM.zip
+*.dSYM
+
+# SwiftPM
+.build/
+.swiftpm/
+Package.resolved
+
+# Simulator data
+Library/Developer/CoreSimulator/*
+*.simdevicetype
+*.simruntime
+
+##############################################
+# SWIFT / FASTLANE / COCOAPODS
+##############################################
+# Swift Package Manager
+.swiftpm/
+.build/
+
+# CocoaPods
+Pods/
+Podfile.lock
+project.xcworkspace/
+
+# Carthage
+Carthage/
+Carthage/Build/
+
+# Fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots
+fastlane/test_output
+
+##############################################
+# FIREBASE
+##############################################
+# DO NOT IGNORE GOOGLE-SERVICES FILES UNLESS YOU USE SECRETS MANAGER
+# Uncomment if storing securely:
+# GoogleService-Info.plist
+# GoogleService-Info*.plist
+
+.firebase/
+.firebase_cache/
+.firebase-tools.json
+
+# Emulator
+firebase-debug.log
+
+##############################################
+# NODE / FIREBASE FUNCTIONS (optional)
+##############################################
+functions/node_modules/
+functions/lib/
+functions/dist/
+functions/.env
+functions/.env.local
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+
+##############################################
+# .NET WORKER SERVICE
+##############################################
+# Build artifacts
+**/bin/
+**/obj/
+**/.vs/
+
+# Rider / VS Code
+.idea/
+*.sln.iml
+.vscode/
+*.user
+*.userosscache
+*.suo
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+project.fragment.lock.json
+
+# Logs
+*.log
+logs/
+log/
+*.pid
+
+# Secrets
+appsettings.Development.json
+appsettings.Local.json
+*.secret.json
+*.env
+.env.*
+Secrets/
+
+##############################################
+# GENERAL BUILD & TEMP
+##############################################
+*.tmp
+*.temp
+tmp/
+temp/
+.cache/
+*.bak
+*.orig
+*.rej
+*.swp
+*.swo
+*.kate-swp
+
+##############################################
+# MEDIA / GENERATED
+##############################################
+# If you generate assets or screenshots locally:
+screenshots/
+generated/
+export/
+*.png~
+*.jpg~
+*.mp4~
+*.wav~
+
+##############################################
+# MISC
+##############################################
+Thumbs.db
+ehthumbs.db
+*.rptproj.bak
+*.pdb
+*.mdb
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+*.xccheckout
+*.xcactivitylog
+*.xcscmblueprint
+*.xccrashpoint

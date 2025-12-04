@@ -1,0 +1,126 @@
+{
+  "rules": {
+    ".read": false,
+    ".write": false,
+
+    "users": {
+      "$uid": {
+        ".read": "$uid === auth.uid",
+        ".write": "$uid === auth.uid",
+
+        "settings": {
+          ".validate": "newData.hasChildren(['chat_color', 'avatar_style', 'language'])"
+        },
+
+        "economy": {
+          ".validate": "newData.hasChildren(['coins', 'bottle_tokens', 'daily_loot_timestamp'])"
+        },
+
+        "entitlements": {
+          ".write": "$uid === auth.uid",
+          ".validate": "newData.child('premium_user').isBoolean()"
+        }
+      }
+    },
+
+    "bottles": {
+      "$bottleId": {
+        ".read": "auth != null",
+
+        ".write": "auth != null && (
+          (!data.exists() && newData.child('owner_uid').val() === auth.uid) ||
+          (data.exists() && data.child('owner_uid').val() === auth.uid)
+        )",
+
+        "content": {
+          "text": {
+            // Only owner can define original text or original_lang
+            "original": {
+              ".write": "data.parent().parent().child('owner_uid').val() === auth.uid"
+            },
+            "original_lang": {
+              ".write": "data.parent().parent().child('owner_uid').val() === auth.uid"
+            },
+
+            "translation_memory": {
+              "$lang": {
+                // Anyone authenticated may contribute a translation
+                ".write": "auth != null",
+                ".read": "auth != null"
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "bottle_openers": {
+      "$bottleId": {
+        "$uid": {
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      }
+    },
+
+    "chats": {
+      "$bottleId": {
+        ".read": "auth != null",
+
+        "$messageId": {
+          // Only message author can write original content
+          ".write": "auth != null && newData.child('uid').val() === auth.uid",
+
+          "text": {
+            "original": {
+              ".write": "newData.parent().parent().child('uid').val() === auth.uid"
+            },
+            "original_lang": {
+              ".write": "newData.parent().parent().child('uid').val() === auth.uid"
+            },
+
+            "translation_memory": {
+              "$lang": {
+                // Anyone may save a cached translation
+                ".write": "auth != null",
+                ".read": "auth != null"
+              }
+            }
+          }
+        }
+      }
+    },
+
+    "presence": {
+      "$bottleId": {
+        "$uid": {
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      }
+    },
+
+    "watched": {
+      "$uid": {
+        "$bottleId": {
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      }
+    },
+
+    "notifications_queue": {
+      "$uid": {
+        "$notificationId": {
+          ".read": "$uid === auth.uid",
+          ".write": "$uid === auth.uid"
+        }
+      }
+    },
+
+    "worker_internal": {
+      ".read": false,
+      ".write": false
+    }
+  }
+}

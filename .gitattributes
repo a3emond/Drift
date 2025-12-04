@@ -1,0 +1,68 @@
+##############################################
+# LINE ENDINGS
+##############################################
+* text=auto eol=lf
+
+##############################################
+# COMMON TEXT FILES
+##############################################
+*.swift      text
+*.h          text
+*.m          text
+*.mm         text
+*.cpp        text
+*.c          text
+*.cs         text
+*.json       text
+*.yaml       text
+*.yml        text
+*.plist      text
+*.md         text
+*.txt        text
+*.sh         text
+*.bash       text
+*.zsh        text
+*.env        text
+*.gitignore  text
+*.gitattributes text
+
+##############################################
+# BINARY FILES (never diff)
+##############################################
+*.png        binary
+*.jpg        binary
+*.jpeg       binary
+*.gif        binary
+*.webp       binary
+*.mp4        binary
+*.mov        binary
+*.wav        binary
+*.mp3        binary
+*.aac        binary
+*.pdf        binary
+*.zip        binary
+*.tar        binary
+*.gz         binary
+*.psd        binary
+
+##############################################
+# XCODE PROJECT FILES
+##############################################
+# Ensure stable diffs for pbxproj
+*.pbxproj merge=union
+
+##############################################
+# DOTNET
+##############################################
+*.dll        binary
+*.exe        binary
+*.pdb        binary
+*.snk        binary
+
+##############################################
+# FONT FILES
+##############################################
+*.ttf        binary
+*.otf        binary
+*.woff       binary
+*.woff2      binary
