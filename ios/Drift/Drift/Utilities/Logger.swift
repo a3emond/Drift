@@ -15,6 +15,8 @@ enum LogCategory: String {
     case storage
     case worker
     case ui
+    case location
+    case presence
 }
 
 protocol Logging {

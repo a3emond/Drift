@@ -60,13 +60,19 @@ final class AppCoordinator: ObservableObject {
     }
 
     private func handleAppBecameActive() {}
-    private func handleAppBecameInactive() {}
+    private func handleAppBecameInactive() {
+        environment.mediaDraft.clearAllDraftMedia()
+    }
     private func handleAppMovedToBackground() {}
 
     func routeToUnauthenticated() { rootRoute = .unauthenticated }
     func routeToMainTabs()        { rootRoute = .mainTabs }
 
-    private func handleAppDidEnterBackground() {}
+    private func handleAppDidEnterBackground() {
+        environment.mediaDraft.clearAllDraftMedia()
+    }
     private func handleAppWillEnterForeground() {}
-    private func handleAppWillTerminate() {}
+    private func handleAppWillTerminate() {
+        environment.mediaDraft.clearAllDraftMedia()
+    }
 }

@@ -36,6 +36,8 @@ struct DriftApp: App {
         }
     }
 
+    // my cheat to have more control over initialization order
+    // basically, at this step the DI is initialized and the coordinator starts listening to auth changes
     private func bootstrap() {
         let env = AppEnvironment()
         appEnvironment.value = env

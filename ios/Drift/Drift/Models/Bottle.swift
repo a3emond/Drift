@@ -1,6 +1,10 @@
 import Foundation
 
-struct Bottle: Codable {
+// ----------------------------------------------------------
+// MARK: - Bottle Root
+// ----------------------------------------------------------
+
+struct Bottle: Codable, Equatable {
     var owner_uid: String
     var created_at: TimeInterval
     var expires_at: TimeInterval?
@@ -14,15 +18,28 @@ struct Bottle: Codable {
     var status: BottleStatus
 }
 
-struct BottleLocation: Codable {
+// ----------------------------------------------------------
+// MARK: - Location
+// ----------------------------------------------------------
+
+struct BottleLocation: Codable, Equatable {
     var lat: Double
     var lng: Double
 }
 
-struct BottleConditions: Codable {
+// ----------------------------------------------------------
+// MARK: - Conditions (FLEXIBLE + SAFE)
+// ----------------------------------------------------------
+
+struct BottleConditions: Codable, Equatable {
     var password: String?
-    var time_window: TimeWindow
-    var weather: WeatherCondition
+
+    /// OPTIONAL — bottle may have no time constraints
+    var time_window: TimeWindow?
+
+    /// OPTIONAL — bottle may have no weather constraint
+    var weather: WeatherCondition?
+
     var exact_location: Bool
     var distance_min: Double?
     var distance_max: Double?
@@ -30,23 +47,39 @@ struct BottleConditions: Codable {
     var one_shot: Bool
 }
 
-struct TimeWindow: Codable {
+// ----------------------------------------------------------
+// MARK: - Time Window
+// ----------------------------------------------------------
+
+struct TimeWindow: Codable, Equatable {
     var start: TimeInterval?
     var end: TimeInterval?
 }
 
-struct WeatherCondition: Codable {
+// ----------------------------------------------------------
+// MARK: - Weather
+// ----------------------------------------------------------
+
+struct WeatherCondition: Codable, Equatable {
     var type: String?
     var threshold: Double?
 }
 
-struct BottleContent: Codable {
+// ----------------------------------------------------------
+// MARK: - Content
+// ----------------------------------------------------------
+
+struct BottleContent: Codable, Equatable {
     var text: String?
     var image_path: String?
     var audio_path: String?
 }
 
-struct BottleStatus: Codable {
+// ----------------------------------------------------------
+// MARK: - Status
+// ----------------------------------------------------------
+
+struct BottleStatus: Codable, Equatable {
     var locked: Bool
     var dead: Bool
     var alive_until: TimeInterval

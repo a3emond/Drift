@@ -17,4 +17,11 @@ struct RootContainerView: View {
         }
         .onAppear { coordinator.start() }
     }
+    
 }
+#Preview {
+    RootContainerView()
+        .environmentObject(AppCoordinator(environment: AppEnvironment()))
+        .environmentObject(AppEnvironment())
+}
+

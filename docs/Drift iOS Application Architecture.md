@@ -16,33 +16,15 @@ This document provides a structured, formal overview of the technical architectu
 
 # **1. Overview**
 
-
-
-
-
 **Drift** is an iOS application built around location-based ephemeral bottles. Each bottle contains text and optional media, is governed by unlocking conditions, and includes an ephemeral chat that survives only while users remain inside. The backend relies entirely on **Firebase Realtime Database**, **Firebase Storage**, and **Firebase Authentication**. A separate **Drift Worker (.NET service)** maintains lifecycle tasks and background processes.
-
-
 
 This document defines the iOS app architecture, module responsibilities, data flow, and key interaction patterns.
 
-
-
 ------
-
-
-
-
 
 # **2. High-Level Architecture**
 
-
-
-
-
 The Drift iOS application is structured around five principal layers:
-
-
 
 1. **Presentation Layer** (SwiftUI Views)
 2. **Navigation Layer** (Coordinators & Tab Routing)
@@ -50,37 +32,17 @@ The Drift iOS application is structured around five principal layers:
 4. **Services Layer** (Firebase services, location service, translation service)
 5. **Data Layer** (Realtime listeners, storage handlers, iOS caching primitives)
 
-
-
-
-
 The application relies on reactive, listener-based flows rather than local databases.
-
-
 
 ------
 
-
-
-
-
 # **3. Navigation Structure**
 
-
-
-
-
 The application uses a **bottom tab bar** with three stable sections:
-
-
 
 - **Map** – The primary interface, displaying all drifting bottles globally.
 - **Messages** – Saved bottles, active chats, and event notifications.
 - **Profile** – Account settings, statistics, entitlements, and preferences.
-
-
-
-
 
 Navigation into “Bottle Detail” and “Chat” occurs as modal screens or stacked push screens.
 
