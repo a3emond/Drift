@@ -33,15 +33,13 @@ struct RootTabView: View {
             // --------------------------------------------------
             // Profile
             // --------------------------------------------------
-
-            Text("Profile")
+            
+            ProfileView(env: env)
+                .environmentObject(env)
                 .tabItem {
                     Label("Profile", systemImage: "person.circle")
                 }
-
-            // NOTE:
-            // Profile feature not implemented yet.
-            // This placeholder will be replaced by ProfileView.
+            
         }
     }
 }

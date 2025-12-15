@@ -39,6 +39,9 @@ protocol BottleServiceProtocol: AnyObject {
         uid: String,
         distanceKm: Double
     ) async throws
+    
+    func observeBottle(bottleId: String) -> AsyncStream<Bottle?>
+    func unlockBottle(bottleId: String, openedAt: TimeInterval) async throws
 }
 
 // ----------------------------------------------------------
@@ -256,6 +259,25 @@ final class BottleService: BottleServiceProtocol {
         logger.info(
             "BottleService.registerOpener SUCCESS bottle=\(bottleId) uid=\(uid)",
             category: .database
+        )
+    }
+    
+    func observeBottle(bottleId: String) -> AsyncStream<Bottle?> {
+        db.observe(
+            Bottle.self,
+            at: .bottles(.bottle(id: bottleId))
+        )
+    }
+
+    func unlockBottle(bottleId: String, openedAt: TimeInterval) async throws {
+        // Minimal unlock: flip locked to false + set opened_at
+        // We update at the bottle root using child keys.
+        try await db.update(
+            [
+                "status/locked": false,
+                "opened_at": openedAt
+            ],
+            at: .bottles(.bottle(id: bottleId))
         )
     }
 }

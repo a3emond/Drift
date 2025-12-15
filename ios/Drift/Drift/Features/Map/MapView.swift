@@ -8,7 +8,7 @@ struct MapView: View {
     // ------------------------------------------------------
 
     @EnvironmentObject private var env: AppEnvironment
-    
+
     // ------------------------------------------------------
     // MARK: - State
     // ------------------------------------------------------
@@ -16,6 +16,10 @@ struct MapView: View {
     @StateObject private var vm: MapViewModel
     private let logger: Logging
 
+    // Camera drives the Map rendering
+    @State private var cameraPosition: MapCameraPosition = .automatic
+
+    // Region drives your visibility math (always available, no optional)
     @State private var region = MKCoordinateRegion(
         center: CLLocationCoordinate2D(latitude: 0, longitude: 0),
         span: MKCoordinateSpan(latitudeDelta: 60, longitudeDelta: 60)
@@ -72,13 +76,7 @@ struct MapView: View {
     var body: some View {
         ZStack {
 
-            if presentationMode == .individual {
-                mapWithAnnotations
-            }
-
-            if presentationMode == .clustered {
-                mapWithClusters
-            }
+            mapView
 
             if !didFinishInitialLoad {
                 ProgressView()
@@ -116,7 +114,7 @@ struct MapView: View {
                   let location = vm.userLocation
             else { return }
 
-            region = MKCoordinateRegion(
+            let target = MKCoordinateRegion(
                 center: CLLocationCoordinate2D(
                     latitude: location.latitude,
                     longitude: location.longitude
@@ -127,15 +125,30 @@ struct MapView: View {
                 )
             )
 
+            // Update both:
+            region = target
+            cameraPosition = .region(target)
+
             hasCenteredOnUser = true
         }
         .onDisappear {
             vm.stop()
         }
+
+        // --------------------------------------------------
+        // MARK: - Sheets
+        // --------------------------------------------------
+
         .sheet(item: $vm.selectedBottle) { selection in
             BottleDetailView(
                 bottleId: selection.id,
-                logger: logger
+                distanceKm: selection.distanceKm,
+                distanceCategory: selection.distanceCategory,
+                bottleService: env.bottles,
+                authService: env.auth,
+                chatService: env.chat,
+                storage: env.storage,
+                logger: env.logger
             )
         }
         .sheet(item: $vm.newBottleDraft) { draft in
@@ -150,66 +163,76 @@ struct MapView: View {
     }
 
     // ------------------------------------------------------
-    // MARK: - Map Variants
+    // MARK: - Map
     // ------------------------------------------------------
 
-    private var mapWithAnnotations: some View {
-        Map(
-            coordinateRegion: $region,
-            interactionModes: .all,
-            showsUserLocation: true,
-            annotationItems: visibleAnnotations
-        ) { bottle in
-            MapAnnotation(
-                coordinate: CLLocationCoordinate2D(
-                    latitude: bottle.latitude,
-                    longitude: bottle.longitude
-                )
-            ) {
-                BottleAnnotationView(item: bottle) {
-                    vm.didSelectBottle(id: bottle.id)
+    private var mapView: some View {
+        Map(position: $cameraPosition, interactionModes: .all) {
+
+            if presentationMode == .individual {
+                ForEach(visibleAnnotations) { bottle in
+                    Annotation(
+                        "",
+                        coordinate: CLLocationCoordinate2D(
+                            latitude: bottle.latitude,
+                            longitude: bottle.longitude
+                        ),
+                        anchor: .bottom
+                    ) {
+                        BottleAnnotationView(item: bottle) {
+                            vm.didSelectBottle(id: bottle.id)
+                        }
+                    }
                 }
             }
+
+            if presentationMode == .clustered {
+                ForEach(clusters) { cluster in
+                    Annotation(
+                        "",
+                        coordinate: CLLocationCoordinate2D(
+                            latitude: cluster.latitude,
+                            longitude: cluster.longitude
+                        ),
+                        anchor: .bottom
+                    ) {
+                        ClusterPillView(count: cluster.count) {
+                            zoomIntoCluster(cluster)
+                        }
+                    }
+                }
+            }
+        }
+        // This is the key: keep `region` updated while zooming/panning
+        .onMapCameraChange(frequency: .continuous) { context in
+            region = context.region
         }
         .simultaneousGesture(
             LongPressGesture(minimumDuration: 0.6)
                 .onEnded { _ in
-                    let center = region.center
                     UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    vm.beginBottleCreation(at: center)
+                    vm.beginBottleCreation(at: region.center)
                 }
         )
     }
 
-    private var mapWithClusters: some View {
-        Map(
-            coordinateRegion: $region,
-            interactionModes: .all,
-            showsUserLocation: true,
-            annotationItems: clusters
-        ) { cluster in
-            MapAnnotation(
-                coordinate: CLLocationCoordinate2D(
-                    latitude: cluster.latitude,
-                    longitude: cluster.longitude
-                )
-            ) {
-                ClusterPillView(count: cluster.count) {
-                    region = MapRegionMath.zoomedIntoCluster(
-                        current: region,
-                        clusterLatitude: cluster.latitude,
-                        clusterLongitude: cluster.longitude
-                    )
-                }
-            }
-        }
-        .simultaneousGesture(
-            LongPressGesture(minimumDuration: 0.6)
-                .onEnded { _ in
-                    let center = region.center
-                    UIImpactFeedbackGenerator(style: .medium).impactOccurred()
-                    vm.beginBottleCreation(at: center)
-                }
+    // ------------------------------------------------------
+    // MARK: - Helpers
+    // ------------------------------------------------------
+
+    private func zoomIntoCluster(_ cluster: MapClusterItem) {
+        let target = MKCoordinateRegion(
+            center: CLLocationCoordinate2D(
+                latitude: cluster.latitude,
+                longitude: cluster.longitude
+            ),
+            span: MKCoordinateSpan(
+                latitudeDelta: 0.25,
+                longitudeDelta: 0.25
+            )
         )
+
+        region = target
+        cameraPosition = .region(target)
     }
-} 
+}

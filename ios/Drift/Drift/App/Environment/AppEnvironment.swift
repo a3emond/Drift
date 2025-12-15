@@ -11,6 +11,7 @@ final class AppEnvironment: ObservableObject {
 
     let location: LocationService
     let bottles: BottleService
+    let chat: ChatService
 
     let mediaDraft: MediaDraftService
 
@@ -27,6 +28,7 @@ final class AppEnvironment: ObservableObject {
 
         self.location = LocationService(logger: logger)
         self.bottles = BottleService(db: database, auth: auth, logger: logger)
+        self.chat = ChatService(db: database, storage: storage, logger: logger)
 
         self.mediaDraft = MediaDraftService(logger: logger)
     }

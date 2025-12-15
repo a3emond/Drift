@@ -17,8 +17,9 @@ struct MapAnnotationItem: Identifiable, Equatable {
 
 struct SelectedBottle: Identifiable, Equatable {
     let id: String
+    let distanceKm: Double
+    let distanceCategory: String
 }
-
 struct NewBottleDraft: Identifiable, Equatable {
     let id = UUID()
     let latitude: Double
@@ -149,11 +150,41 @@ final class MapViewModel: ObservableObject {
     // MARK: - User Actions
     // ------------------------------------------------------
 
+    //Bottle selection
     func didSelectBottle(id: String) {
         logger.info("MapViewModel.didSelectBottle id=\(id)", category: .ui)
-        selectedBottle = SelectedBottle(id: id)
+
+        guard let item = annotations.first(where: { $0.id == id }),
+              let km = distanceKm(to: item.latitude, item.longitude)
+        else {
+            selectedBottle = SelectedBottle(id: id, distanceKm: 0, distanceCategory: "unknown")
+            return
+        }
+
+        selectedBottle = SelectedBottle(
+            id: id,
+            distanceKm: km,
+            distanceCategory: distanceCategory(for: km)
+        )
+    }
+    private func distanceKm(to latitude: Double, _ longitude: Double) -> Double? {
+        guard let u = userLocation else { return nil }
+
+        let a = CLLocation(latitude: u.latitude, longitude: u.longitude)
+        let b = CLLocation(latitude: latitude, longitude: longitude)
+
+        return a.distance(from: b) / 1000.0
     }
 
+    private func distanceCategory(for km: Double) -> String {
+        if km < 0.25 { return "near" }
+        if km < 1.0  { return "mid" }
+        if km < 5.0  { return "far" }
+        return "very_far"
+    }
+    
+
+    //Bottle creation
     func beginBottleCreation(at coordinate: CLLocationCoordinate2D) {
         logger.info(
             "MapViewModel.beginBottleCreation lat=\(coordinate.latitude) lng=\(coordinate.longitude)",

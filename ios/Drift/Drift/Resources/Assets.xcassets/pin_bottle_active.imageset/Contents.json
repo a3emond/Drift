@@ -3,6 +3,17 @@
     {
       "filename" : "pin_bottle_active.png",
       "idiom" : "universal",
+      "resizing" : {
+        "cap-insets" : {
+          "bottom" : 0,
+          "top" : 815
+        },
+        "center" : {
+          "height" : 2,
+          "mode" : "tile"
+        },
+        "mode" : "3-part-vertical"
+      },
       "scale" : "1x"
     },
     {
