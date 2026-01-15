@@ -60,8 +60,8 @@ fastlane/test_output
 ##############################################
 # DO NOT IGNORE GOOGLE-SERVICES FILES UNLESS YOU USE SECRETS MANAGER
 # Uncomment if storing securely:
-# GoogleService-Info.plist
-# GoogleService-Info*.plist
+GoogleService-Info.plist
+GoogleService-Info*.plist
 
 .firebase/
 .firebase_cache/
