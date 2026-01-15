@@ -138,7 +138,7 @@ private extension Image {
     func pinBaseStyle() -> some View {
         self
             .resizable()
-            .frame(width: 160, height: 160)
+            .frame(width: 160, height: 120)
             .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: 1)
     }
 }
